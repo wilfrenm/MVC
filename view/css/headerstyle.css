@@ -1,0 +1,43 @@
+.header{
+	background-color:#e3ceef;
+	color:black;
+	width:100%;
+	position:fixed;
+	top:0px;
+	left:0px;
+	margin-bottom:20px;
+	
+}
+.header h3, .header h2, .header button{
+	display:inline-block;
+	position:relative;
+}
+.header button{
+	
+}
+.header h3, .header h2{
+	color:#212226;
+	left:35px;
+}
+.color{
+	color:#e25b0d;
+}
+.header button{
+	margin-left:25px;
+	margin-right:25px;
+	font-size:14px;
+	float:right;
+	top:21px;
+	font-weight:bolder;
+	background-color:#e3ceef;
+	border:0px solid black;
+	border-radius:10px;
+}
+.header a{
+	text-decoration:none;
+	color:black;
+
+}
+body{
+	background-color:#fff6f6;
+}

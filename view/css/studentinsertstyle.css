@@ -1,0 +1,29 @@
+.form{
+	background-color:skyblue;
+	width:300px;
+	padding:20px;
+	border-radius:10px;
+	margin:80px auto;
+	box-shadow:5px 5px 10px red;
+}
+.form:hover{
+	background-color:lightgreen;
+}
+form input{
+	border-radius:5px;
+}
+.image{
+	border-radius:100%;
+	overflow:hidden;
+	width:50%;
+	margin:0px auto;
+}
+.img{
+	width:100%;
+}
+h1{
+	text-align:center;
+}
+span{
+	color:#e25b0d;;
+}

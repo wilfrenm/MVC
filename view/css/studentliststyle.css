@@ -1,0 +1,34 @@
+body{
+	background-color:#f9eded;
+}
+.fil{
+	margin-top:80px;
+	border-radius:10px;
+	background-color:lightpink;
+}
+.button{
+	border-radius:10px;
+	background-color:lightpink;
+}
+.fil a, a{
+	text-decoration:none;
+}
+.filter{
+	width:300px;
+	margin-top:80px;
+}
+label{
+	display:inline-block;
+	width:100px;
+	line-height:30px;
+}
+.margin{
+	margin-top:80px;
+}
+.heading{
+	text-align:center;
+	color:orange;
+}
+.page{
+	text-align:center;
+}
