@@ -22,7 +22,7 @@
 		echo "<table align=center border=1 cellspacing=0 cellpadding=5 width=950><tr>";
 		//For loop to print only keys so fetched first row's keys
 		foreach($studentdata[0] as $key=>$value){
-			if($key!="photo_location" && $key!="active_status")
+			if($key!="photo_location" && $key!="active_status" && $key!="user_type")
 				echo"<td bgcolor='lightgreen' align=center><b>".strtoupper($key)."</b></td>";
 		}
 		echo"<td bgcolor='lightgreen' align=center><b>DELETE</b></td>";
@@ -35,7 +35,7 @@
 				if($k2=='password'){
 					echo"<td bgcolor='skyblue' align=center>".base64_decode($v2)."</td>";
 				}
-				else if($k2!="photo_location" && $k2!="active_status"){
+				else if($k2!="photo_location" && $k2!="active_status" && $k2!="student" && $k2!="user_type"){
 					echo"<td bgcolor='skyblue' align=center>$v2</td>";
 				}
 			}
@@ -49,28 +49,21 @@
 		
 		echo"</div>";
 	}
-	
-	if(isset($viewdata['limitstart'])){
-		
-		$start=$viewdata['limitstart']+6;
-		$prevstart=$viewdata['limitstart']-6;
+
 		echo "<div class='page'>";
-		if($prevstart>=0)
-			echo"<br><button class='button'><a href='index.php?mod=student&view=studentlist&limitstart=$prevstart&limitend=5'>Previous</a></button>";
-		$rows_per_page=5;
-		$tot_pages=round($_SESSION['count']/$rows_per_page);
-		$limit=0;
-		for($i=1;$i<=$tot_pages;$i++){
-			echo " &nbsp &nbsp <a href='index.php?mod=student&view=studentlist&limitstart=$limit&limitend=5'>$i</a> &nbsp &nbsp ";
-			$limit+=6;
-		}
+		$prev=$pageno-1;
+		if($pageno>1)
+			echo"<br><button class='button'><a href='index.php?mod=student&view=studentlist&pgno=$prev'>Previous</a></button>";
 		
-		if($start<$_SESSION['count'])
-			echo "<button class='button'><a href='index.php?mod=student&view=studentlist&limitstart=$start&limitend=5'>Next</a></button>";
-			
+		// for($i=1;$i<=$tot_pages;$i++){
+		// 	echo " &nbsp &nbsp <a href='index.php?mod=student&view=studentlist&pgno=$pageno+1'>$i</a> &nbsp &nbsp ";
+		// 	$limit+=6;
+		// }
+		$next=$pageno+1;
+		if($pageno<ceil($_SESSION['count']/2))
+			echo "<button class='button'><a href='index.php?mod=student&view=studentlist&pgno=".$next."'>Next</a></button>";
+		
 		echo "</div>";
-		
-	}
 
 ?>
 

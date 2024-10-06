@@ -60,7 +60,7 @@
 <body>
 	<div class="form">
 		<h1>INSERT NEW DATA</h1>
-		<form action="index.php?mod=student&view=studentinsert&operation=insert&limitstart=0&limitend=5" method=post onsubmit="return verify()" enctype="multipart/form-data">
+		<form action="index.php?mod=student&view=studentinsert&operation=insert" method=post onsubmit="return verify()" enctype="multipart/form-data">
 			<label>First Name:</label><br><br>
 			<input type="text" name="fname" class="click" required><br><br>
 			<label>Last Name:</label><br><br>

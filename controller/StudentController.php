@@ -8,6 +8,7 @@
 	 *  class is for controlling data from model and view
 	 */
 	class StudentController{
+		public $studentmodelobject;
 		#Controller class for redirecting and performing bussiness logics
 		#Constructor creates object for model and starts the session
 		function __construct($conn){
@@ -18,9 +19,11 @@
 		function studentlist(){
 			#if admin is the user then showing all student's data 
 			if($this->sessioncheck()=="admin"){
-				$studentdata=$this->studentmodelobject->studentlist();
+				$pageno=$_GET['pgno'];
+				$start=($_GET['pgno']*2)-2;
+				$previous=$start-2;
+				$studentdata=$this->studentmodelobject->studentlist($start);
 				include("view/viewstudentlist.php");
-				// $_SESSION['count']=$this->studentmodelobject->fetchAllStudentdata();
 			}
 		}
 		
@@ -42,18 +45,17 @@
 						move_uploaded_file($_FILES['photo_location']['tmp_name'],$imgpath);
 						$postdata["photo_location"]=$imgpath;
 					}
-					#now send the data to model and insert into database table
+					#now send the data to model and insert into database table1
 					$this->studentmodelobject->studentinsert_table1($postdata);
-					$result=$this->studentmodelobject->studentlist();
-					$user_id=$result[count($result)-1]['user_id'];
-					
+					#select the table data for getting the userid of last inserted data
+					$user_id=$this->studentmodelobject->lastinsertedstudent();
 					$result=$this->studentmodelobject->studentinsert_table2($postdata,$user_id,$imgpath);
 					
 						
 					if($result)echo"<script>alert('Inserted successfully')</script>";
 					
 					#After inserting list all the user
-					$this->studentlist();
+					header("location:index.php?mod=student&view=studentlist&pgno=1");
 				}
 			}
 		}
@@ -64,7 +66,7 @@
 				//Once delete button clicked id of the particular user is send via url
 				$result=$this->studentmodelobject->studentdatadelete($_GET['user_id']);
 				if($result)echo"<script>alert('Deleted successfully')</script>";
-				$this->studentlist();
+				header("location:index.php?mod=student&view=studentlist");
 			}
 		}
 
@@ -96,7 +98,7 @@
 				#pass the imagepath,data array from post, and id of the user edited from url
 				$result=$this->studentmodelobject->studentupdate($data,$_GET['id']);
 				if($result)echo"<script>alert('Updated successfully')</script>";
-				$this->studentlist();
+				header("location:index.php?mod=student&view=studentlist&pgno=1");
 			}
 			 
 		}

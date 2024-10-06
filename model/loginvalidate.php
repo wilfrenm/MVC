@@ -4,13 +4,13 @@
 		function __construct($conn){
 			$this->conn=$conn;
 		}
-		function loginvalidate(){
-			$query = $this->conn->prepare("select * from user_details inner join student_details on user_id=r_user_id where active_status=1 and email=:email and password=:password");
-			$query->bindParam(":email",$_POST['email']);
-			$password=base64_encode($_POST['pass']);
+		function loginvalidate($data){
+			$query = $this->conn->prepare("select * from user_details where active_status=1 and email=:email and password=:password");
+			$query->bindParam(":email",$data['email']);
+			$password=base64_encode($data['pass']);
 			$query->bindParam(":password",$password);
 			$query->execute();
-			$resultset=$query->fetch(PDO::FETCH_ASSOC);
+			$resultset=$query->fetch(PDO::FETCH_ASSOC);print_r($resultset);
 			return $resultset;
 		}
 	}
