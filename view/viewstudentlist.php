@@ -11,6 +11,7 @@
 <head>
 	<title>DATALIST</title>
 	<link rel="stylesheet" href="view/css/studentliststyle.css">
+	<script src="view/js/validation.js"></script>
 </head>
 <body>
 	
@@ -38,9 +39,9 @@
 					echo"<td bgcolor='skyblue' align=center>$v2</td>";
 				}
 			}
-			echo"<td bgcolor='skyblue' align=center><button class='button'><a href='index.php?mod=student&view=studentdelete&user_id=".$value['user_id']."' >Delete</a></button></td>";
-			echo"<td bgcolor='skyblue' align=center><button class='button'><a href='index.php?mod=student&view=studentupdate&id=".$value['user_id']."&operation=getvalue'>Edit</a></button></td>";
-			echo"<td bgcolor='skyblue' align=center><button class='button'><a href='index.php?mod=student&view=studentcheck&id=".$value['user_id']."&operation=getvalue'>View</a></button></td>";
+			echo"<td bgcolor='skyblue' align=center><button class='button' onclick='return verify2()'><a href='index.php?mod=student&view=studentdelete&user_id=".$value['user_id']."' ><b>Delete</a></button></td>";
+			echo"<td bgcolor='skyblue' align=center><button class='button'><a href='index.php?mod=student&view=studentedit&id=".$value['user_id']."'><b>Edit</a></button></td>";
+			echo"<td bgcolor='skyblue' align=center><button class='button'><a href='index.php?mod=student&view=studentview&id=".$value['user_id']."'><b>View</a></button></td>";
 			echo"</tr>";
 		}
 		

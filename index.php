@@ -88,7 +88,7 @@
 					$main=new $classname($this->conn);
 					$func_name=$request_datas['view'];
 					#dynamically call's the sub-contoller method 
-					call_user_func(array($main,$func_name),$request_datas);
+					call_user_func(array($main,$func_name),$request_datas['request_data']);
 				}  
 			}
 			catch (Exception $e) 

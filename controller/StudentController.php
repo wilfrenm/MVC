@@ -13,9 +13,8 @@
 		function __construct($conn){
 			include_once("model/modelstudent.php");
 			$this->studentmodelobject=new ModelStudent($conn);
-			if(empty($_SESSION['user'])){
-				session_start();
-			}
+			// if(empty($_SESSION['user'])){
+			// }
 		}
 		#This function used to display the student list
 		function studentlist(){
@@ -65,17 +64,55 @@
 			#Checking if  the user is  set or not for only access to admin
 			if($this->sessioncheck()=="admin"){
 				//Once delete button clicked id of the particular user is send via url
-				$result=$this->studentmodelobject->studentdatadelete($_GET);
+				$result=$this->studentmodelobject->studentdatadelete($_GET['user_id']);
 				if($result)echo"<script>alert('Deleted successfully')</script>";
 				$this->studentlist();
 			}
+		}
+
+		function studentedit(){
+			#Checking if  the user is  set or not for only access to admin
+			if($this->sessioncheck()=="admin"){
+				#data is fetched for the particular user
+				$resultset=$this->studentmodelobject->studentdatafetch($_GET['id']);
+				include("view/viewstudentedit.php");
+			}
+		}
+
+
+		function studentupdate(){
+			#Checking if  the user is  set or not for only access to admin
+			if($this->sessioncheck()=="admin"){
+				$imgpath="";
+				#if files uploaded then move to local system and save the path in database
+				print_r($_FILES);
+				if(!empty($_FILES['photo_location']['full_path'])){
+					$imgpath="view/images/".$_FILES['photo_location']['name'];
+					move_uploaded_file($_FILES['photo_location']['tmp_name'],$imgpath);
+					$_POST['photo_location']=$imgpath;
+				}
+				else{
+					unset($_POST['photo_location']);
+				}
+				$data=$_POST;
+				#pass the imagepath,data array from post, and id of the user edited from url
+				$result=$this->studentmodelobject->studentupdate($data,$_GET['id']);
+				if($result)echo"<script>alert('Updated successfully')</script>";
+				header("location:index.php?mod=student&view=studentlist");	
+			}
 			 
 		}
-		
-		
-		
-		
-		
+
+		#This function is used to display specific details about the student
+		function studentview($resultset){
+			#Checking if the session for the variable is set or not
+			if($_SESSION['user']){
+				#calling model to fetch data of the specific user
+				$studentdata=$this->studentmodelobject->studentdataview($resultset['id']);
+				if(!empty($studentdata))
+					include("view/studentview.php");
+			}
+		}
 		
 		function admininsert(){
 			if($this->sessioncheck()=="admin"){
@@ -93,114 +130,19 @@
 			$admindata=$this->studentmodelobject->adminfetch();
 			include("view/viewadminlist.php");
 		}
-		#This function is used to soft delete the value
-		// function studentdelete(){
-			// #Checking if  the user is  set or not for only access to admin
-			// if($this->sessioncheck()=="admin"){
-				// Once delete button clicked id of the particular user is send via url
-				// $result=$this->studentmodelobject->studentdatadelete($_GET);
-				// if($result)echo"<script>alert('Deleted successfully')</script>";
-				// $this->studentlist();
-			// }
-			 
-		// }
-		#This function is used to update the existing user with new values
-		function studentupdate(){
-			#Checking if  the user is  set or not for only access to admin
-			if($this->sessioncheck()=="admin"){
-				#If url has getvalue then then edit form is displayed
-				if($_GET['operation']=='getvalue'){
-					#data is fetched for the particular user
-					$resultset=$this->studentmodelobject->studentdatafetch(null,$_GET);
-					include("view/viewstudentedit.html");
-				}
-				#This is for updating the values entered in the form
-				else if($_GET['operation']=='update'){
-					$imgpath="";
-					#if files uploaded then move to local system and save the path in database
-					if(!empty($_FILES)){
-						$imgpath="view/images/".$_FILES['photo_location']['name'];
-						move_uploaded_file($_FILES['photo_location']['tmp_name'],$imgpath);
-					}
-					$_POST['photo_location']=$imgpath;
-					$data=$_POST;
-					#pass the imagepath,data array from post, and id of the user edited from url
-					$result=$this->studentmodelobject->studentupdate($data,$_GET['id']);
-					if($result)echo"<script>alert('Update successfully')</script>";
-					$this->studentlist();
-				}
-			}
-			 
-		}
-		/*This is  the initial function executed for checking the values entered by the users
-		in login page*/
-		function studentcheck(){
-			#Once form submitted checking if user in the form checked or not
-			if(!empty($_POST['user'])){
-				#If the user is checked in admin column then fetch data of admin
-				if($_POST['user']=="admin")
-					$resultset=$this->studentmodelobject->admindatafetch($_POST);
-				#else check the data of the student
-				else
-					$resultset=$this->studentmodelobject->studentdatafetch($_POST,null);
-			}
-			#This else is for view button in list
-			else{
-				$resultset=$this->studentmodelobject->studentdatafetch(null,$_GET);
-			}
-			#Checking if the fetched data has values or not
-			if(!empty($resultset)){
-				#radio button check in login page selected or not
-				if(!empty($_POST['user'])){
-					/*If user is admin then set session variable user to admin and name to the actual
-					name for displaying in all pages*/
-					if($_POST['user']=="admin"){
-						$_SESSION['user']="admin";
-						$_SESSION['name']=$resultset[0]['name'];
-						#once data fetched then it is a true user so list all the data of students
-						$this->studentlist();
-					}
-					#for checking if the user is student getting the fetched data from database
-					#and checking if it has fname which means that the student name
-					
-					else if(!empty($resultset[0]['fname'])){
-						$_SESSION['user']="student";
-						$_SESSION['name']=$resultset[0]['fname'];
-						#Once checked the specific data of the student is displayed and no
-						#operations can be performed except loggin out
-						$this->studentview($resultset);
-					}
-				}
-				#To view the data using view button as view button has a link with operation=getvalue
-				else if(!empty($_GET['operation']) && !empty($resultset[0]['fname'])){
-					$this->studentview($resultset);
-				}
-				else{
-					echo "<script>alert('Invalid Email or Password Please Enter Again')</script>";
-					include("view/studentlogin.php");
-				}
-			}
-			else{
-				echo "<script>alert('Invalid Email or Password Please Enter Again')</script>";
-				include("view/studentlogin.php");
-			}
-		}
-		#This function is used to display specific details about the student
-		function studentview($resultset){
-			#Checking if the session for the variable is set or not
-			if(isset($_SESSION['user'])){
-				#calling model to fetch data of the specific user
-				$studentdata=$this->studentmodelobject->studentdataview($resultset);
-				if(!empty($studentdata))
-					include("view/studentview.php");
-			}
-			else
-				include("view/studentlogin.php");
-		}
+		
+		
+		
+		
 		
 		function sessioncheck(){
-			if(!empty($_SESSION['user']))
-				return $_SESSION['user'];
+			if(!empty($_SESSION['user'])){
+				if($_SESSION['user']=="admin"){
+					return $_SESSION['user'];
+				}
+				else
+					header("location:index.php");
+			}
 			else
 				header("location:index.php");
 		}
@@ -209,7 +151,7 @@
 			
 			if($this->sessioncheck()){
 				echo "Invalid view";
-				include("view/studentlogin.php");
+				header("location:index.php");
 				return null;
 			}
 		}

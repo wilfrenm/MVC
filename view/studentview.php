@@ -11,7 +11,7 @@
 
 	include("common/header.php");
 	echo "<div class='margin'>
-			<h1><span class='color'>{$studentdata[0]['fname']}</span> DETAILS</h1>";
+			<h1><span class='color'>{$studentdata[0]['first_name']}</span> DETAILS</h1>";
 	
 	echo "<div class='div'>";
 	
@@ -22,8 +22,8 @@
 		if($key!="password" && $key!="r_user_id" && $key!="photo_location" && $key!="active_status"){
 			echo "
 				<tr>
-					<td><b>$key</b></td><td>:</td>
-					<td>$value</td>	
+					<td><b>".strtoupper($key)."</b></td><td>:</td>
+					<td>".strtoupper($value)."</td>	
 				</tr>
 				
 			";

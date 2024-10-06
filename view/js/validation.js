@@ -48,3 +48,19 @@
 			}
 			
 		}
+		function verify2(){
+			if(confirm("Are you sure you want to delete")){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		function logout(){
+			if(confirm("Are you sure you want to logout")){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}

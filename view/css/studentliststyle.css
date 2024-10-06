@@ -3,11 +3,11 @@ body{
 }
 .fil{
 	margin-top:80px;
-	border-radius:10px;
+	border-radius:5px;
 	background-color:lightpink;
 }
 .button{
-	border-radius:10px;
+	border-radius:5px;
 	background-color:lightpink;
 }
 .fil a, a{
