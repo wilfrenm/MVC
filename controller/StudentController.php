@@ -13,8 +13,6 @@
 		function __construct($conn){
 			include_once("model/modelstudent.php");
 			$this->studentmodelobject=new ModelStudent($conn);
-			// if(empty($_SESSION['user'])){
-			// }
 		}
 		#This function used to display the student list
 		function studentlist(){
@@ -98,7 +96,7 @@
 				#pass the imagepath,data array from post, and id of the user edited from url
 				$result=$this->studentmodelobject->studentupdate($data,$_GET['id']);
 				if($result)echo"<script>alert('Updated successfully')</script>";
-				header("location:index.php?mod=student&view=studentlist");	
+				$this->studentlist();
 			}
 			 
 		}
@@ -113,27 +111,6 @@
 					include("view/studentview.php");
 			}
 		}
-		
-		function admininsert(){
-			if($this->sessioncheck()=="admin"){
-				if(empty($_POST)){
-					include("view/viewadmininsert.php");
-				}
-				else{
-					$this->studentmodelobject->admindatinsert($_POST);
-					$this->adminlist();
-				}
-			}
-			 
-		}
-		function adminlist(){
-			$admindata=$this->studentmodelobject->adminfetch();
-			include("view/viewadminlist.php");
-		}
-		
-		
-		
-		
 		
 		function sessioncheck(){
 			if(!empty($_SESSION['user'])){

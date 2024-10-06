@@ -26,7 +26,13 @@ input{
 	border-radius:10px;
 	text-align:center;
 }
-
+.button{
+	border-radius:5px;
+	background-color:lightpink;
+}
+.button a{
+	text-decoration:none;
+}
 label{
 	display:inline-block;
 	width:100px;

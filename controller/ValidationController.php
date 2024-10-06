@@ -15,11 +15,13 @@
 				if($resultset['user_type']=="admin"){
 					$_SESSION['user']="admin";	
 					$_SESSION['name']=strstr($resultset['email'],"@",true);
+					$_SESSION['photo']=$resultset['photo_location'];
 					header("location:index.php?mod=student&view=studentlist");
 				}
 				else{
 					$_SESSION['user']="student";	
-					$_SESSION['name']=strstr($resultset['email'],"@");
+					$_SESSION['name']=strstr($resultset['email'],"@",true);
+					$_SESSION['photo']=$resultset['photo_location'];
 					$url="location:index.php?mod=student&view=studentview&id=".$resultset['user_id'];
 					header("$url");
 				}

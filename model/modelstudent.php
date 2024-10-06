@@ -48,7 +48,6 @@
 			$query->bindParam(":gender",$postdata["gender"]);
 			$query->bindParam(":location",$postdata["location"]);
 			$query->bindParam(":phone_number",$postdata["phone_number"]);
-			if(!empty($postdata['photolocation']))
 			$query->bindParam(":photo_location",$postdata["photo_location"]);
 			try{
 				$query->execute();
@@ -278,50 +277,7 @@
 		// 		return false;
 		// 	}
 		// }
-		#This function is used to fetch the admin data for checking in the controller
-		function admindatafetch($logindata){
-			
-			$query=$this->conn->prepare("select * from admin where email=:email and password=:pass and active_status='Y'");
-			$query->bindParam(":email",$logindata['email']);
-			$password=base64_encode($logindata['pass']);
-			$query->bindParam(":pass",$password);
-			$query->execute();
-			$resultset=$query->fetchAll(PDO::FETCH_ASSOC);
-			
-			if(!empty($resultset)){
-				return $resultset;
-			}
-			else{
-				return null;
-			}
-		}
-		#Method used to insert admin
-		function admindatinsert($getdata){
-			$query=$this->conn->prepare("insert into admin (name,email,password) values(:name,:email,:password)");
-			$query->bindParam(":name",$getdata['name']);
-			$query->bindParam(":email",$getdata['email']);
-			$password=base64_encode($getdata['password']);
-			$query->bindParam(":password",$password);
-			$query->execute();
-		}
-		#Method admin fetch
-		function adminfetch(){
-			$query=$this->conn->prepare("select * from admin where active_status='Y'");
-			$query->execute();
-			$resultset=$query->fetchAll(PDO::FETCH_ASSOC);
-			return $resultset;
-		}
 		
-		// #Fetching specific data of the user
-		// function studentdataview($resultset){
-		// 	// $stmt="select fname,lname,dob,dept,email,password,photo_loation from student_details user_id={$resultset[0]['user_id']}";
-		// 	// $query=$this->conn->prepare("$stmt");echo "1";
-		// 	$query=$this->conn->prepare("select fname,lname,dob,dept,email,password,photo_location from student_details where user_id=:user_id");
-		// 	$query->bindParam(":user_id",$resultset[0]['user_id']);
-		// 	$query->execute();echo "ED";
-		// 	$studentdata=$query->fetchAll(PDO::FETCH_ASSOC);
-		// 	return $studentdata;
-		// }
 		
 	}
 
