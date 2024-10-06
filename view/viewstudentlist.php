@@ -1,7 +1,7 @@
 <?php
 	include("common/header.php");
 	if(empty($_GET['open'])){
-		echo "<button class='fil'><a href='index.php?mod=student&view=studentlist&open=true'>Filter</a></button>";
+		echo "<button class='fil'><a href='index.php?mod=student&view=studentlist&open=true&pgno=1'>Filter</a></button>";
 	}
 	if(!empty($_GET['open'])){
 		include("view/filter.php");
@@ -22,7 +22,7 @@
 		echo "<table align=center border=1 cellspacing=0 cellpadding=5 width=950><tr>";
 		//For loop to print only keys so fetched first row's keys
 		foreach($studentdata[0] as $key=>$value){
-			if($key!="photo_location" && $key!="active_status" && $key!="user_type")
+			if($key=="user_id" || $key=="first_name" || $key=="last_name" || $key=="email" || $key=="password")
 				echo"<td bgcolor='lightgreen' align=center><b>".strtoupper($key)."</b></td>";
 		}
 		echo"<td bgcolor='lightgreen' align=center><b>DELETE</b></td>";
@@ -35,7 +35,7 @@
 				if($k2=='password'){
 					echo"<td bgcolor='skyblue' align=center>".base64_decode($v2)."</td>";
 				}
-				else if($k2!="photo_location" && $k2!="active_status" && $k2!="student" && $k2!="user_type"){
+				else if($k2=="user_id" or $k2=="first_name" or $k2=="last_name" or $k2=="email"){
 					echo"<td bgcolor='skyblue' align=center>$v2</td>";
 				}
 			}
@@ -52,17 +52,35 @@
 
 		echo "<div class='page'>";
 		$prev=$pageno-1;
-		if($pageno>1)
-			echo"<br><button class='button'><a href='index.php?mod=student&view=studentlist&pgno=$prev'>Previous</a></button>";
-		
-		// for($i=1;$i<=$tot_pages;$i++){
-		// 	echo " &nbsp &nbsp <a href='index.php?mod=student&view=studentlist&pgno=$pageno+1'>$i</a> &nbsp &nbsp ";
-		// 	$limit+=6;
-		// }
-		$next=$pageno+1;
-		if($pageno<ceil($_SESSION['count']/2))
-			echo "<button class='button'><a href='index.php?mod=student&view=studentlist&pgno=".$next."'>Next</a></button>";
-		
+		if(empty($_GET['filter'])){
+			if($pageno>1)
+				echo"<br><button class='button'><a href='index.php?mod=student&view=studentlist&pgno=$prev'>Previous</a></button>";
+			
+			for($i=1;$i<=ceil($_SESSION['count']/2);$i++){
+				if($i==$pageno)
+					echo " &nbsp &nbsp <b><a href='index.php?mod=student&view=studentlist&pgno=$i' class='highlight'>$i</a></b> &nbsp &nbsp ";
+				else
+					echo " &nbsp &nbsp <a href='index.php?mod=student&view=studentlist&pgno=$i'>$i</a> &nbsp &nbsp ";
+			}
+			$next=$pageno+1;
+			if($pageno<ceil($_SESSION['count']/2))
+				echo "<button class='button'><a href='index.php?mod=student&view=studentlist&pgno=".$next."'>Next</a></button>";
+		}
+		else{
+			echo"<h2>Filter Applied</h2>";
+			if($pageno>1)
+				echo"<br><button class='button'><a href='index.php?mod=student&view=studentlist&filter=true&pgno=$prev'>Previous</a></button>";
+			
+			for($i=1;$i<=ceil($_SESSION['count']/2);$i++){
+				if($i==$pageno)
+					echo " &nbsp &nbsp <b><a href='index.php?mod=student&view=studentlist&filter=true&pgno=$i' class='highlight'>$i</a></b> &nbsp &nbsp ";
+				else
+					echo " &nbsp &nbsp <a href='index.php?mod=student&view=studentlist&filter=true&pgno=$i'>$i</a> &nbsp &nbsp ";
+			}
+			$next=$pageno+1;
+			if($pageno<ceil($_SESSION['count']/2))
+				echo "<button class='button'><a href='index.php?mod=student&view=studentlist&filter=true&pgno=".$next."'>Next</a></button>";
+		}
 		echo "</div>";
 
 ?>

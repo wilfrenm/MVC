@@ -11,7 +11,7 @@
 				<h2>Welcome <span class='color'>{$_SESSION['name']}<span></h2>
 				<button class='logout' onclick='return logout()'><a href='index.php?mod=validation&view=logout'>LOG OUT</a></button>
 				<button><a href='index.php?mod=student&view=studentinsert'>ADD USER</a></button>
-				<button class='home'><a href='index.php?mod=student&view=studentlist&limitstart=0&limitend=5'>HOME</a></button>
+				<button class='home'><a href='index.php?mod=student&view=studentlist&pgno=1'>HOME</a></button>
 			</div>
 			";
 	}

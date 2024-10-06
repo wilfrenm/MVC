@@ -10,6 +10,10 @@ body{
 	border-radius:5px;
 	background-color:lightpink;
 }
+.highlight{
+	color:red;
+	font-size: 18px;
+}
 .fil a, a{
 	text-decoration:none;
 }

@@ -13,6 +13,7 @@
 		#Constructor creates object for model and starts the session
 		function __construct($conn){
 			include_once("model/modelstudent.php");
+			// echo"<br><br><Br><BR><BR>";
 			$this->studentmodelobject=new ModelStudent($conn);
 		}
 		#This function used to display the student list
@@ -22,7 +23,13 @@
 				$pageno=$_GET['pgno'];
 				$start=($_GET['pgno']*2)-2;
 				$previous=$start-2;
-				$studentdata=$this->studentmodelobject->studentlist($start);
+				if(!empty($_GET['filterdata_available']))
+					$_SESSION['filterQuery']=$_POST;
+				if(empty($_GET['filter']))
+					$_SESSION['filterQuery']="";
+				
+				$studentdata=$this->studentmodelobject->studentlist($start,$_SESSION['filterQuery']);
+				// print_r($studentdata);
 				include("view/viewstudentlist.php");
 			}
 		}
@@ -49,7 +56,7 @@
 					$this->studentmodelobject->studentinsert_table1($postdata);
 					#select the table data for getting the userid of last inserted data
 					$user_id=$this->studentmodelobject->lastinsertedstudent();
-					$result=$this->studentmodelobject->studentinsert_table2($postdata,$user_id,$imgpath);
+					$result=$this->studentmodelobject->studentinsert_table2($postdata,$user_id[0]['user_id']);
 					
 						
 					if($result)echo"<script>alert('Inserted successfully')</script>";
@@ -66,7 +73,7 @@
 				//Once delete button clicked id of the particular user is send via url
 				$result=$this->studentmodelobject->studentdatadelete($_GET['user_id']);
 				if($result)echo"<script>alert('Deleted successfully')</script>";
-				header("location:index.php?mod=student&view=studentlist");
+				header("location:index.php?mod=student&view=studentlist&pgno=1");
 			}
 		}
 

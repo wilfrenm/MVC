@@ -13,14 +13,18 @@
 			$this->conn=$conn;
 		}
 		
-		function studentlist($start){
-			$stmt="select * from user_details where active_status=1 and user_type='student'";
+		function studentlist($start,$filtercontent){
+			$stmt="select * from user_details inner join student_details on user_id = r_user_id where active_status=1 and user_type='student'";
 			$query = $this->conn->prepare("$stmt");
 			$query->execute();
 			$resultset=$query->fetchAll(PDO::FETCH_ASSOC);
 			$_SESSION['count']=count($resultset);
-			
-
+			if(!empty($filtercontent)){
+				foreach($filtercontent as $key=>$value){
+					if(!empty($value))
+						$stmt .= " and $key='$value'";
+				}
+			}
 			$stmt.=" Limit $start,2";
 			$query=$this->conn->prepare("$stmt");
 			$query->execute();
@@ -51,7 +55,7 @@
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		}
 		
-		function studentinsert_table2($postdata,$id,$imgpath){
+		function studentinsert_table2($postdata,$id){
 			$query=$this->conn->prepare("insert into student_details (r_user_id,dob,age,department,gender,location,phone_number,photo_location) values(:id,:dob,:age,:dept,:gender,:location,:phone_number,:photo_location)");
 			
 			$query->bindParam(":id",$id);
