@@ -60,7 +60,7 @@
 <body>
 	<div class="form">
 		<h1>INSERT NEW DATA</h1>
-		<form action="index.php?mod=student&view=studentinsert&operation=insert" method=post onsubmit="return verify()" enctype="multipart/form-data">
+		<form action="index.php?mod=student&view=studentinsert&operation=insert" method=post onsubmit="return insert()" enctype="multipart/form-data">
 			<label>First Name:</label><br><br>
 			<input type="text" name="fname" class="click" required><br><br>
 			<label>Last Name:</label><br><br>
@@ -73,7 +73,7 @@
 			<label>DOB:</label><br><br>
 			<input type="date" name="dob" class="click" required><br><br>
 			<label>Age:</label><br><br>
-			<input type="number" name="age" class="click" required><br><br>
+			<input type="number" name="age" id='age' class="click" required><br><br>
 			<label>Department:</label><br><br>
 			<select name="dept">
 				<option value="ECE">ECE</option>

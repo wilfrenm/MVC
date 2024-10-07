@@ -12,19 +12,22 @@
 		function __construct($conn){
 			$this->conn=$conn;
 		}
-		
+		#Selects all data from user_details table
 		function studentlist($start,$filtercontent){
 			$stmt="select * from user_details inner join student_details on user_id = r_user_id where active_status=1 and user_type='student'";
 			$query = $this->conn->prepare("$stmt");
 			$query->execute();
 			$resultset=$query->fetchAll(PDO::FETCH_ASSOC);
+			#count for pagination total pages
 			$_SESSION['count']=count($resultset);
+			#if url has filter content then select query is appended with conditions
 			if(!empty($filtercontent)){
 				foreach($filtercontent as $key=>$value){
 					if(!empty($value))
 						$stmt .= " and $key='$value'";
 				}
 			}
+			#Now limit is applied displaying 2 contents per page
 			$stmt.=" Limit $start,2";
 			$query=$this->conn->prepare("$stmt");
 			$query->execute();
@@ -32,7 +35,7 @@
 			return $resultset;
 		}
 		
-		
+		#inserts data to first table
 		function studentinsert_table1($postdata){
 			$query=$this->conn->prepare("insert into user_details (first_name,last_name,email,password,active_status,user_type) values(:first_name,:last_name,:email,:password,1,'student')");
 			$query->bindParam(":first_name",$postdata["fname"]);
@@ -49,15 +52,16 @@
 			}
 		}
 
+		#selects last inserted data from table
 		function lastinsertedstudent(){
 			$query = $this->conn->prepare("select user_id from user_details order by user_id desc limit 1");
 			$query->execute();
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		}
 		
+		#insert data to second table 
 		function studentinsert_table2($postdata,$id){
 			$query=$this->conn->prepare("insert into student_details (r_user_id,dob,age,department,gender,location,phone_number,photo_location) values(:id,:dob,:age,:dept,:gender,:location,:phone_number,:photo_location)");
-			
 			$query->bindParam(":id",$id);
 			$query->bindParam(":dob",$postdata["dob"]);
 			$query->bindParam(":age",$postdata["age"]);
@@ -76,6 +80,7 @@
 			}
 		}
 		
+		#deletes data from table using particular id
 		function studentdatadelete($id){
 			$query=$this->conn->prepare("update user_details set active_status='N' where user_id=:id");
 			$query->bindParam(":id",$id);
@@ -89,7 +94,7 @@
 			}
 		}
 
-
+		#
 		function studentupdate($postdata,$id){
 			$query=$this->conn->prepare("update user_details set first_name=:first_name,last_name=:last_name,email=:email,password=:password,active_status=1,user_type='student' where user_id=:id");
 			$query->bindParam(":first_name",$postdata["fname"]);

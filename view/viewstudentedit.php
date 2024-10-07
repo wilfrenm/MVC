@@ -60,7 +60,7 @@
 <body>
 	<div class='form'>
 		<h1>EDIT <span><?php echo $resultset[0]['first_name'];?><span></h1>
-		<form action="index.php?mod=student&view=studentupdate&id=<?php echo $_GET['id']?>" method=post onsubmit="return verify()" enctype="multipart/form-data">
+		<form action="index.php?mod=student&view=studentupdate&id=<?php echo $_GET['id']?>" method=post onsubmit="return insert()" enctype="multipart/form-data">
 			<label>First Name:</label><br><br>
 			<input type="text" name="fname" value="<?php echo $resultset[0]['first_name']?>" class="click" required><br><br>
 			<label>Last Name:</label><br><br>
@@ -73,7 +73,7 @@
 			<label>DOB:</label><br><br>
 			<input type="date" name="dob" value="<?php echo $resultset[0]['dob']?>" class="click" required><br><br>
 			<label>Age:</label><br><br>
-			<input type="number" name="age" value="<?php echo $resultset[0]['age']?>" class="click" required><br><br>
+			<input type="number" name="age" id='age' value="<?php echo $resultset[0]['age']?>" class="click" required><br><br>
 			<label>Department:</label><br><br>
 			<select name="dept" ">
 				<option value="ECE" <?php if($resultset[0]['department']=="ECE") echo"selected"?> >ECE</option>

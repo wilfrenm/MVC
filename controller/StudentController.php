@@ -13,7 +13,6 @@
 		#Constructor creates object for model and starts the session
 		function __construct($conn){
 			include_once("model/modelstudent.php");
-			// echo"<br><br><Br><BR><BR>";
 			$this->studentmodelobject=new ModelStudent($conn);
 		}
 		#This function used to display the student list
@@ -30,7 +29,7 @@
 				
 				$studentdata=$this->studentmodelobject->studentlist($start,$_SESSION['filterQuery']);
 				// print_r($studentdata);
-				include("view/viewstudentlist.php");
+				include_once("view/viewstudentlist.php");
 			}
 		}
 		
@@ -42,7 +41,7 @@
 			if($this->sessioncheck()=="admin"){
 				#In form to  differenciate after submitting operation in url used
 				if(!isset($_GET["operation"]))
-					include("view/viewstudentinsert.php");
+					include_once("view/viewstudentinsert.php");
 				#If operation is set pass the value to model
 				else{
 					$postdata=$_POST;
@@ -58,8 +57,6 @@
 					$user_id=$this->studentmodelobject->lastinsertedstudent();
 					$result=$this->studentmodelobject->studentinsert_table2($postdata,$user_id[0]['user_id']);
 					
-						
-					if($result)echo"<script>alert('Inserted successfully')</script>";
 					
 					#After inserting list all the user
 					header("location:index.php?mod=student&view=studentlist&pgno=1");
@@ -72,7 +69,6 @@
 			if($this->sessioncheck()=="admin"){
 				//Once delete button clicked id of the particular user is send via url
 				$result=$this->studentmodelobject->studentdatadelete($_GET['user_id']);
-				if($result)echo"<script>alert('Deleted successfully')</script>";
 				header("location:index.php?mod=student&view=studentlist&pgno=1");
 			}
 		}
@@ -82,7 +78,7 @@
 			if($this->sessioncheck()=="admin"){
 				#data is fetched for the particular user
 				$resultset=$this->studentmodelobject->studentdatafetch($_GET['id']);
-				include("view/viewstudentedit.php");
+				include_once("view/viewstudentedit.php");
 			}
 		}
 
@@ -117,7 +113,7 @@
 				#calling model to fetch data of the specific user
 				$studentdata=$this->studentmodelobject->studentdataview($resultset['id']);
 				if(!empty($studentdata))
-					include("view/studentview.php");
+					include_once("view/studentview.php");
 			}
 		}
 		
