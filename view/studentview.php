@@ -31,8 +31,6 @@
 		}
 	}
 	echo "<tr>
-		<td align=center><button class='button' onclick='return verify2()'><a href='index.php?mod=student&view=studentdelete&user_id=".$studentdata[0]['user_id']."' ><b>Delete</a></button></td>
-		<td></td><td align=center><button class='button'><a href='index.php?mod=student&view=studentedit&id=".$studentdata[0]['user_id']."'><b>Edit</a></button></td>
 		</tr></table></div></div></div>";
 
 ?>
